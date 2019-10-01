@@ -1,0 +1,98 @@
+---
+title: "My First Notebook"
+author: "Miguel"
+date: "01 October 2019"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+---
+# Heading 1 {#link1}
+text after heading
+
+## Header 2
+text after header 2
+
+[text of link](https://rpubs.com/mesopinions/534239)
+
+### Header 3
+text after header 3
+
+#### Header 4
+text after header 4
+you can find more information in [this section](#link1)
+bold text **here**  
+italic text *here*  
+superscript text ^here^  
+subscript text ~here~  
+code text `here`  
+strikethrough text ~~here~~
+
+Reference number one [^1]
+
+[^1]: This is reference number 1
+
+## Lists
+1. Item 1
+    a. Sub item after 4 spaces
+    b. Sub item 2
+2. Item 2
+3. Item 3
+
+* Item 1
+* Item 2
+* Item 3
+
+<!-- do not show this on the report -->
+
+# Images
+![Caption for image](img/SPA.png)
+
+# Tables
+
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+|  Item 1  |  Item 2  |  Item 3  |
+
+# Blocks
+
+```
+print("Hello world"")
+x = 1 + 2
+```
+
+# Inserting R code chunks
+
+```{r include=FALSE}
+library(tidyverse)
+pop_data <- read_csv("data/gapminder_data.csv")
+
+# create a table with only European countries in 2007 showing countries with the largest life expectancy first
+
+euro_data_tbl <- pop_data %>% 
+                     filter(continent == "Europe"& year == 2007) %>% 
+                     arrange(desc(lifeExp)) %>% 
+                     select(-continent, -year)
+```
+The top countries in Europe that have the largest life expectancy in 2007 are shown in the table below:
+
+```{r echo=FALSE}
+library(rmarkdown)
+paged_table(euro_data_tbl)
+```
+
+```{r}
+# create a dataset that will be used to plot an image
+euro_data_fig <- pop_data %>% 
+                  filter(continent == "Europe") %>% 
+                  mutate(year=as.factor(year))
+```
+
+```{r fig.cap="life expectancy in Europe"}
+euro_data_fig %>% 
+                ggplot(mapping = aes(x=year, y=lifeExp)) +
+                geom_violin()
+```
+
+
